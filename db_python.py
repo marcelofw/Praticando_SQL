@@ -11,12 +11,12 @@ sql_query = """SELECT name FROM sqlite_master WHERE type = 'table';"""
 cursor.execute(sql_query)
 print(cursor.fetchall())
 
-
-
-
-
-
-
+query1 = 'SELECT * FROM tb_vendas_dsa'
+cursor.execute(query1)
+nomes_colunas = [description[0] for description in cursor.description]
+print(nomes_colunas)
+dados = cursor.fetchall()
+print(dados)
 
 
 
