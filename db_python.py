@@ -31,32 +31,46 @@ query4 = """SELECT Nome_Produto, AVG(Unidades_Vendidas)
             WHERE Valor_Unitario > 199
             GROUP BY Nome_Produto"""
 cursor.execute(query4)
-print(cursor.fetchall())
+# print(cursor.fetchall())
+
+# query5 = """SELECT Nome_Produto, AVG(Unidades_Vendidas)
+#             FROM tb_vendas_dsa
+#             WHERE Valor_Unitario > 199 & AVG(Unidades_Vendidas) > 10
+#             GROUP BY Nome_Produto"""
+# cursor.execute(query5)          # erro: misuse of aggregate AVG()
+
+query5 = """SELECT Nome_Produto, AVG(Unidades_Vendidas)
+            FROM tb_vendas_dsa
+            WHERE Valor_Unitario > 199
+            GROUP BY Nome_Produto
+            HAVING AVG(Unidades_Vendidas) > 10"""
+cursor.execute(query5)
+# print(cursor.fetchall())
+
+cursor.close()      #boa prática = somente usar o cursor quando está trabalhando no db e fechar em seguida
+con.close()
 
 
+# Usando pandas com SQL
 
+con = sqlite3.connect("cap12_dsa.db")
+cursor = con.cursor()
 
+query = "SELECT * FROM tb_vendas_dsa"
+cursor.execute(query)
+dados = cursor.fetchall()
+# print(dados)
+# print(type(dados))
 
+df = pd.DataFrame(dados, columns = ["ID_Pedido", "ID_Cliente", "Nome_Produto", "Valor_Unitario", "Unidades_Vendidas", "Custo"])
+print(df.head())
 
+cursor.close()
+con.close()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+media_unidades_vendidas = df["Unidades_Vendidas"].mean()
+# print(type(media_unidades_vendidas))
+# print(media_unidades_vendidas)
 
 
 
