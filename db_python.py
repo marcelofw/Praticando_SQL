@@ -63,7 +63,7 @@ dados = cursor.fetchall()
 # print(type(dados))
 
 df = pd.DataFrame(dados, columns = ["ID_Pedido", "ID_Cliente", "Nome_Produto", "Valor_Unitario", "Unidades_Vendidas", "Custo"])
-print(df.head())
+# print(df.head())
 
 cursor.close()
 con.close()
@@ -72,11 +72,14 @@ media_unidades_vendidas = df["Unidades_Vendidas"].mean()
 # print(type(media_unidades_vendidas))
 # print(media_unidades_vendidas)
 
+media_unidades_vendidas_por_produto = df.groupby("Nome_Produto")["Unidades_Vendidas"].mean()
+# print(media_unidades_vendidas_por_produto.head())
 
+# print(df[df["Valor_Unitario"] > 199].groupby("Nome_Produto")["Unidades_Vendidas"].mean())
 
+# print(df[df["Valor_Unitario"] > 199].groupby("Nome_Produto").filter(lambda x: x["Unidades_Vendidas"].mean() > 10))
 
-
-
-
-
+print(df[df["Valor_Unitario"] > 199].groupby("Nome_Produto") \
+                                    .filter(lambda x: x["Unidades_Vendidas"].mean() > 10) \
+                                    .groupby("Nome_Produto")["Unidades_Vendidas"].mean())      
 
